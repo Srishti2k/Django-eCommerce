@@ -1,8 +1,19 @@
 from django.shortcuts import render
+from django.views import View
+from .models import *
+# def home(request):
+#  return render(request, 'app/home.html')
 
-def home(request):
- return render(request, 'app/home.html')
+class ProductView(View):
+    def get(self, request):
+        topwear = Product.objects.filter(category = 'TW')
+        bottomwear = Product.objects.filter(category = 'BW')
+        mobile = Product.objects.filter(category = 'M')
+        laptop = Product.objects.filter(category = 'L')
 
+        context = {'topwear' : topwear , 'bottomwear' : bottomwear , 'mobile' : mobile , 'laptop' : laptop}
+
+        return render(request , 'app/home.html' , context)
 def product_detail(request):
  return render(request, 'app/productdetail.html')
 
