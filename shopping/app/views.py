@@ -14,8 +14,16 @@ class ProductView(View):
         context = {'topwear' : topwear , 'bottomwear' : bottomwear , 'mobile' : mobile , 'laptop' : laptop}
 
         return render(request , 'app/home.html' , context)
-def product_detail(request):
- return render(request, 'app/productdetail.html')
+
+
+# def product_detail(request):
+#  return render(request, 'app/productdetail.html')
+
+class product_detail(View):
+    def get(self, request , pk):
+        product = Product.objects.get(pk=pk)
+        return render(request, 'app/productdetail.html' , {'product' : product})
+
 
 def add_to_cart(request):
  return render(request, 'app/addtocart.html')
