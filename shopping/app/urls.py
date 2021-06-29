@@ -2,7 +2,7 @@ from app.forms import LoginForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import path
 from app import views
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import logout, views as auth_views
 from .forms import LoginForm
 urlpatterns = [
     #path('', views.home),
@@ -18,6 +18,9 @@ urlpatterns = [
     #path('registration/', views.customerregistration, name='customerregistration'),
     path('checkout/', views.checkout, name='checkout'),
     path('accounts/login' , auth_views.LoginView.as_view(template_name='app/login.html' , authentication_form= LoginForm ), name='login'),
+    path('logout/' , auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+
+
     #class based views
     path('' , views.ProductView.as_view() , name = 'home'),    
     path('product-detail/<int:pk>' , views.product_detail.as_view() , name = 'product-detail'),     
