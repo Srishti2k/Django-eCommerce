@@ -16,9 +16,14 @@ urlpatterns = [
     path('buy/', views.buy_now, name='buy-now'),
     
     path('address/', views.address, name='address'),
+
     path('orders/', views.orders, name='orders'),
+
     path('changepassword/', views.change_password, name='changepassword'),
-    path('mobile/>', views.mobile, name='mobile'),
+ 
+    path('mobile/', views.mobile, name='mobile'),
+    path('mobile/<slug:data>', views.mobile, name='mobiledata'),
+
     path('checkout/', views.checkout, name='checkout'),
     path('' , views.ProductView.as_view() , name = 'home'),  #class based 
     path('product-detail/<int:pk>' , views.product_detail.as_view() , name = 'product-detail'), #class based 
@@ -35,7 +40,7 @@ urlpatterns = [
 
 
     #login logout registration
-    path('accounts/login' , auth_views.LoginView.as_view(template_name='app/login.html' , authentication_form= LoginForm ), name='login'), #BUILTIN login view
+    path('login/' , auth_views.LoginView.as_view(template_name='app/login.html' , authentication_form= LoginForm ), name='login'), #BUILTIN login view
     path('logout/' , auth_views.LogoutView.as_view(next_page='login'), name='logout'), #BUILTIN Logout view
     path('registration/', views.customerregistration.as_view() , name='customerregistration'), #class based 
     #password change
