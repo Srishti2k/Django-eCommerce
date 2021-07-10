@@ -7,7 +7,14 @@ from django.contrib.auth import logout, views as auth_views
 from .forms import *
 urlpatterns = [
   
-    path('cart/', views.add_to_cart, name='add-to-cart'),
+    path('add-to-cart/', views.add_to_cart, name='add-to-cart'),
+    path('showcart/' , views.showcart , name='showcart'),
+
+
+
+
+
+    
     path('buy/', views.buy_now, name='buy-now'),
     
     path('address/', views.address, name='address'),

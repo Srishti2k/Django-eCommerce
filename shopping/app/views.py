@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 from .models import *
@@ -24,17 +24,45 @@ class product_detail(View):
         product = Product.objects.get(pk=pk)
         return render(request, 'app/productdetail.html' , {'product' : product})
 
-
 def add_to_cart(request):
- return render(request, 'app/addtocart.html')
+	user = request.user
+	product = request.GET.get('prod_id')
+	product_title = Product.objects.get(id=product)
+	Cart(user=user, product=product_title).save()
+	#messages.success(request, 'Product Added to Cart Successfully !!' )
+    
+	return redirect('/showcart')
+	#else:
+		#return redirect('/cart')
+  # Below Code is used to return to same page
+  # return redirect(request.META['HTTP_REFERER'])
+
+
+def showcart(request):
+	totalitem = 0
+	if request.user.is_authenticated:
+		#totalitem = len(Cart.objects.filter(user=request.user)) 
+		user = request.user
+		cart = Cart.objects.filter(user=user) #this gives query set
+		amount = 0.0
+		shipping_amount = 70.0
+		totalamount=0.0
+		cart_product = [p for p in Cart.objects.all() if p.user == request.user] #gives list/array of all the products issued by current user
+		print(cart_product)
+		if cart_product: #agar products hai to
+			for p in cart_product: #pick one by one  product
+				tempamount = (p.quantity * p.product.discount_price) #and find price of each = (price *quantity of product)
+				amount += tempamount #keep ading price of 1 product to another for calculating total
+			totalamount = amount+shipping_amount #add shipping charges also
+			return render(request, 'app/addtocart.html', {'cart':cart, 'amount':amount, 'totalamount':totalamount,})
+		else:
+			return render(request, 'app/emptycart.html',)
+	else:
+		return render(request, 'app/emptycart.html',)
+
 
 def buy_now(request):
  return render(request, 'app/buynow.html')
-
-# class ProfileView(View):
-#     def get(self, request):
-#         form = CustomerProfileForm()
-#         return render(request, 'app/profile.html' , {'form' : form, 'active' : 'btn-primary'})
 
 class ProfileView(View):
 	def get(self, request):
