@@ -62,10 +62,9 @@ class OrderedPlaced(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     quantity = models.PositiveBigIntegerField(default=1)
     ordered_date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(choices= STATUS_CHOICES, max_length=10,  default='Pending'), 
+    status = models.CharField(choices= STATUS_CHOICES, max_length=10,  default='Pending')
 
-    def __str__(self):
-        return str(self.id)
+  
 
 
 
